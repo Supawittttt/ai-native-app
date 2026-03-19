@@ -7,6 +7,7 @@ export default function Home() {
       <p className="mt-4 text-lg">
         Welcome to our AI Native App! This is the home page where you can find the latest updates and features of our application.
       </p>
+
     </div>
   )
 }
