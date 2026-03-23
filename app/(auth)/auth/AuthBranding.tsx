@@ -107,9 +107,9 @@ export function AuthBranding() {
 
         {/* Navigation Dots */}
         <div className='mt-8 flex items-center gap-2'>
-          {slides.map((_, index) => (
+          {slides.map((slide, index) => (
             <button
-              key={index}
+              key={slide.title}
               onClick={() => setActiveIndex(index)}
               className={cn(
                 'h-2 rounded-full transition-all duration-300',

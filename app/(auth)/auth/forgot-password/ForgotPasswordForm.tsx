@@ -11,16 +11,40 @@ export default function ForgotPasswordForm() {
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
+    setError('')
 
-    // TODO: เชื่อมต่อ Better Auth forgot password API
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    try {
+      const response = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      })
 
-    setIsSubmitted(true)
-    setIsLoading(false)
+      if (!response.ok) {
+        const data = (await response.json().catch(() => ({}))) as {
+          error?: string
+          message?: string
+        }
+
+        throw new Error(
+          data?.error || data?.message || 'ไม่สามารถส่งลิงก์รีเซ็ตได้ กรุณาลองใหม่อีกครั้ง'
+        )
+      }
+
+      setIsSubmitted(true)
+    } catch (err) {
+      console.error('Forgot password error:', err)
+      setError(err instanceof Error ? err.message : 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   if (isSubmitted) {
@@ -75,6 +99,13 @@ export default function ForgotPasswordForm() {
           ไม่ต้องกังวล เราจะส่งลิงก์สำหรับรีเซ็ตรหัสผ่านให้คุณ
         </p>
       </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className='rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive'>
+          {error}
+        </div>
+      )}
 
       {/* Email Form */}
       <form onSubmit={handleSubmit} className='space-y-4'>
