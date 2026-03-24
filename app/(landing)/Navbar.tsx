@@ -28,7 +28,11 @@ function Navbar() {
   }, [])
 
   const toggleDarkMode = useCallback(() => {
-    themeStore.setTheme(!isDarkMode)
+    if (isDarkMode) {
+      themeStore.setLightTheme()
+    } else {
+      themeStore.setDarkTheme()
+    }
   }, [isDarkMode])
 
   return (

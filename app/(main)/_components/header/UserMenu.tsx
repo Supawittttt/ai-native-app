@@ -23,7 +23,11 @@ export default function UserMenu() {
   }, [])
 
   const toggleDarkMode = useCallback(() => {
-    themeStore.setTheme(!isDarkMode)
+    if (isDarkMode) {
+      themeStore.setLightTheme()
+    } else {
+      themeStore.setDarkTheme()
+    }
   }, [isDarkMode])
 
   // ปิด dropdown เมื่อคลิกข้างนอก

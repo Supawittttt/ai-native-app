@@ -1,18 +1,6 @@
 // app/api/users/route.ts
 import { NextRequest, NextResponse } from "next/server"
 
-// GET /api/users
-// export async function GET() {
-//     // ตัวอย่าง: ดึงข้อมูลจาก Prisma
-//     // const users = await prisma.user.findMany()
-//     return NextResponse.json({
-//         users: [
-//             { id: 1, name: "John", email: "john@example.com" },
-//             { id: 2, name: "Jane", email: "jane@example.com" },
-//         ],
-//     })
-// }
-
 // POST /api/users
 export async function POST(request: NextRequest) {
     const body = await request.json()

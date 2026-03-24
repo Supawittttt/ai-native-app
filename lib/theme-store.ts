@@ -17,14 +17,13 @@ export const themeStore = {
         }
         return () => observer.disconnect()
     },
-    setTheme: (isDark: boolean): void => {
-        if (isDark) {
-            document.documentElement.classList.add('dark')
-            localStorage.setItem('theme', 'dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-            localStorage.setItem('theme', 'light')
-        }
+    setDarkTheme: (): void => {
+        document.documentElement.classList.add('dark')
+        localStorage.setItem('theme', 'dark')
+    },
+    setLightTheme: (): void => {
+        document.documentElement.classList.remove('dark')
+        localStorage.setItem('theme', 'light')
     },
     initTheme: (): void => {
         if (globalThis.window === undefined) return
