@@ -1,17 +1,16 @@
-'use client'
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Shield, Bot, Database, Sparkles } from 'lucide-react'
 import { SignOutButton } from './SignOutButton'
+import { auth } from '@/lib/auth'
+import { headers } from 'next/headers'
 
-export default function DashboardContent() {
-  // TODO: ใช้ useSession() จาก Better Auth เมื่อเชื่อมต่อ DB แล้ว
-  const session = {
-    user: {
-      name: 'John Doe',
-      email: 'john@example.com',
-      role: 'admin'
-    }
+export default async function DashboardContent() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+
+  if (!session) {
+    return null
   }
 
   const stats = [

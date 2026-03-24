@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Sparkles, Eye, EyeOff } from 'lucide-react'
+import { signIn } from '@/lib/auth-client'
 
 export default function LoginForm() {
   const router = useRouter() // Next.js Router สำหรับการนำทางหลังจากเข้าสู่ระบบสำเร็จ
@@ -23,19 +24,19 @@ export default function LoginForm() {
     setError('')
 
     try {
-      // Mock API Call (จะเปลี่ยนเป็นเรียก API จริงใน Section 7)
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-      const result = {
-        error:
-          email === 'test@example.com' && password === 'password'
-            ? null
-            : { message: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' }
-      }
+      const result = await signIn.email({
+        email,
+        password
+      })
 
       if (result.error) {
-        setError(result.error.message || 'เข้าสู่ระบบไม่สำเร็จ')
+        if (result.error.message === 'Invalid email or password') {
+          setError('อีเมลหรือรหัสผ่านไม่ถูกต้อง')
+        } else {
+          setError(result.error.message || 'เข้าสู่ระบบไม่สำเร็จ')
+        }
       } else {
-        router.push('/dashboard') // นำทางไปยังหน้า Dashboard หลังจากเข้าสู่ระบบสำเร็จ
+        router.push('/dashboard')
       }
     } catch {
       setError('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง')

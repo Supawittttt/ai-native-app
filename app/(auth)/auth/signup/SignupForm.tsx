@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Sparkles, Eye, EyeOff } from 'lucide-react'
+import { signUp } from '@/lib/auth-client'
 
 export default function SignupForm() {
   const router = useRouter()
@@ -29,12 +30,10 @@ export default function SignupForm() {
     }
 
     try {
-      // Mock API call - replace with actual API integration
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-      const result = { success: true, error: null } // Mock result
+      const result = await signUp.email({ name, email, password })
 
       if (result.error) {
-        setError(result.error || 'สมัครสมาชิกไม่สำเร็จ')
+        setError(result.error.message || 'สมัครสมาชิกไม่สำเร็จ')
       } else {
         router.push('/dashboard')
       }
